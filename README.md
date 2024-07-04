@@ -10,7 +10,7 @@ Color manipulation library — parsing, conversion, blending, contrast checking,
 
 ```toml
 [dependencies]
-philiprehberger-color = "0.1"
+philiprehberger-color = "0.1.0"
 ```
 
 ## Usage
