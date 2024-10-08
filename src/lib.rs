@@ -188,6 +188,7 @@ impl Color {
     /// Increase lightness in HSL space.
     ///
     /// `amount` is 0.0-1.0, added to the current lightness (clamped to 1.0).
+    #[must_use]
     pub fn lighten(&self, amount: f64) -> Color {
         let (h, s, l) = self.to_hsl();
         let l = (l + amount).clamp(0.0, 1.0);
@@ -197,6 +198,7 @@ impl Color {
     /// Decrease lightness in HSL space.
     ///
     /// `amount` is 0.0-1.0, subtracted from the current lightness (clamped to 0.0).
+    #[must_use]
     pub fn darken(&self, amount: f64) -> Color {
         let (h, s, l) = self.to_hsl();
         let l = (l - amount).clamp(0.0, 1.0);
@@ -206,6 +208,7 @@ impl Color {
     /// Increase saturation in HSL space.
     ///
     /// `amount` is 0.0-1.0, added to the current saturation (clamped to 1.0).
+    #[must_use]
     pub fn saturate(&self, amount: f64) -> Color {
         let (h, s, l) = self.to_hsl();
         let s = (s + amount).clamp(0.0, 1.0);
@@ -215,6 +218,7 @@ impl Color {
     /// Decrease saturation in HSL space.
     ///
     /// `amount` is 0.0-1.0, subtracted from the current saturation (clamped to 0.0).
+    #[must_use]
     pub fn desaturate(&self, amount: f64) -> Color {
         let (h, s, l) = self.to_hsl();
         let s = (s - amount).clamp(0.0, 1.0);
@@ -222,6 +226,7 @@ impl Color {
     }
 
     /// Invert the color (255 - each component).
+    #[must_use]
     pub fn invert(&self) -> Color {
         Color {
             r: 255 - self.r,
@@ -233,6 +238,7 @@ impl Color {
     /// Convert to grayscale using the luminance formula.
     ///
     /// Uses ITU-R BT.709 coefficients: 0.2126*R + 0.7152*G + 0.0722*B.
+    #[must_use]
     pub fn grayscale(&self) -> Color {
         let gray = (0.2126 * self.r as f64 + 0.7152 * self.g as f64 + 0.0722 * self.b as f64)
             .round() as u8;
@@ -244,6 +250,7 @@ impl Color {
     }
 
     /// Rotate the hue by the given number of degrees in HSL space.
+    #[must_use]
     pub fn rotate_hue(&self, degrees: f64) -> Color {
         let (h, s, l) = self.to_hsl();
         let h = ((h + degrees) % 360.0 + 360.0) % 360.0;
@@ -253,12 +260,47 @@ impl Color {
     /// Linearly interpolate between two colors in RGB space.
     ///
     /// `ratio` of 0.0 returns `a`, 1.0 returns `b`.
+    #[must_use]
     pub fn mix(a: Color, b: Color, ratio: f64) -> Color {
         let ratio = ratio.clamp(0.0, 1.0);
         let r = (a.r as f64 * (1.0 - ratio) + b.r as f64 * ratio).round() as u8;
         let g = (a.g as f64 * (1.0 - ratio) + b.g as f64 * ratio).round() as u8;
         let bl = (a.b as f64 * (1.0 - ratio) + b.b as f64 * ratio).round() as u8;
         Color { r, g, b: bl }
+    }
+
+    /// Return the complementary color (180° hue rotation).
+    #[must_use]
+    pub fn complementary(&self) -> Color {
+        self.rotate_hue(180.0)
+    }
+
+    /// Return the two triadic harmony colors (+120° and +240° hue rotation).
+    #[must_use]
+    pub fn triadic(&self) -> [Color; 2] {
+        [self.rotate_hue(120.0), self.rotate_hue(240.0)]
+    }
+
+    /// Linearly interpolate between this color and another, producing `steps` colors.
+    ///
+    /// Returns a `Vec` of evenly spaced colors from `self` to `other` (inclusive).
+    #[must_use]
+    pub fn gradient(&self, other: &Color, steps: usize) -> Vec<Color> {
+        if steps == 0 {
+            return Vec::new();
+        }
+        if steps == 1 {
+            return vec![*self];
+        }
+        let mut colors = Vec::with_capacity(steps);
+        for i in 0..steps {
+            let t = i as f64 / (steps - 1) as f64;
+            let r = (self.r as f64 * (1.0 - t) + other.r as f64 * t).round() as u8;
+            let g = (self.g as f64 * (1.0 - t) + other.g as f64 * t).round() as u8;
+            let b = (self.b as f64 * (1.0 - t) + other.b as f64 * t).round() as u8;
+            colors.push(Color { r, g, b });
+        }
+        colors
     }
 
     /// Calculate the relative luminance per WCAG 2.1.
@@ -323,6 +365,16 @@ impl FromStr for Color {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Color::from_hex(s)
+    }
+}
+
+impl Default for Color {
+    fn default() -> Self {
+        Color {
+            r: 255,
+            g: 255,
+            b: 255,
+        }
     }
 }
 
