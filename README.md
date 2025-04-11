@@ -3,6 +3,7 @@
 [![CI](https://github.com/philiprehberger/rs-color/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rs-color/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/philiprehberger-color.svg)](https://crates.io/crates/philiprehberger-color)
 [![License](https://img.shields.io/github/license/philiprehberger/rs-color)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Color manipulation library — parsing, conversion, blending, contrast checking, and ANSI terminal output
 
