@@ -1,6 +1,10 @@
 # rs-color
 
-Color manipulation library — parsing, conversion, blending, contrast checking, and ANSI terminal output.
+[![CI](https://github.com/philiprehberger/rs-color/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rs-color/actions/workflows/ci.yml)
+[![Crates.io](https://img.shields.io/crates/v/philiprehberger-color.svg)](https://crates.io/crates/philiprehberger-color)
+[![License](https://img.shields.io/github/license/philiprehberger/rs-color)](LICENSE)
+
+Color manipulation library — parsing, conversion, blending, contrast checking, and ANSI terminal output
 
 ## Installation
 
@@ -57,6 +61,13 @@ println!("{}", red.ansi_paint("This is red text"));
 | `.to_hex()` | Output as hex string |
 | `.to_ansi_fg()` | ANSI foreground escape |
 | `.ansi_paint(text)` | Wrap text with color |
+
+## Development
+
+```bash
+cargo test
+cargo clippy -- -D warnings
+```
 
 ## License
 

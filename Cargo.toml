@@ -2,9 +2,12 @@
 name = "philiprehberger-color"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.70"
 authors = ["Philip Rehberger"]
 description = "Color manipulation library — parsing, conversion, blending, contrast checking, and ANSI terminal output"
 license = "MIT"
+readme = "README.md"
 repository = "https://github.com/philiprehberger/rs-color"
+documentation = "https://docs.rs/philiprehberger-color"
 keywords = ["color", "rgb", "hsl", "hex", "terminal"]
 categories = ["value-formatting", "command-line-interface"]
