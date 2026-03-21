@@ -10,7 +10,7 @@ Color manipulation library — parsing, conversion, blending, contrast checking,
 
 ```toml
 [dependencies]
-philiprehberger-color = "0.1.0"
+philiprehberger-color = "0.2.0"
 ```
 
 ## Usage
@@ -31,6 +31,17 @@ let hex = blue.to_hex(); // "#0000ff"
 let lighter = red.lighten(0.3);
 let muted = red.desaturate(0.5);
 let mixed = Color::mix(red, blue, 0.5); // purple
+
+// Display and FromStr
+println!("{}", red); // "#ff0000"
+let parsed: Color = "#00ff00".parse().unwrap();
+
+// Color harmony
+let comp = red.complementary(); // cyan
+let [t1, t2] = red.triadic();  // 120° and 240° rotations
+
+// Gradient
+let steps = red.gradient(&blue, 5); // 5 colors from red to blue
 
 // Check contrast (WCAG 2.1)
 let ratio = Color::rgb(0, 0, 0).contrast_ratio(Color::rgb(255, 255, 255));
@@ -61,6 +72,11 @@ println!("{}", red.ansi_paint("This is red text"));
 | `.to_hex()` | Output as hex string |
 | `.to_ansi_fg()` | ANSI foreground escape |
 | `.ansi_paint(text)` | Wrap text with color |
+| `.complementary()` | 180° hue rotation |
+| `.triadic()` | Two colors at 120° intervals |
+| `.gradient(other, steps)` | Interpolate between two colors |
+| `Display` / `FromStr` | Print as hex, parse from hex |
+| `Default` | White (255, 255, 255) |
 
 ## Development
 
